@@ -1,0 +1,50 @@
+.formContainer{
+    display: flex;  
+    flex-direction: column;
+    gap: 10px;
+    direction: rtl;
+}
+
+.label{
+    color: #000;
+    font-size: 20px;
+}
+
+.input{
+    width: 70%;
+    height: 30px;
+    border: 1px solid #000;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.3s;
+
+}
+
+.input:focus{
+    border: 3px solid #3bb19b;
+    outline: none;
+}
+
+.input::placeholder{
+    padding: 0 10px;
+    font-size: 15px;
+}
+
+
+.editDetails{
+    width: 30%;
+    height: 40px;
+    color: #fff;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    background-color: #3bb19b;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.editDetails:hover{
+    border: 1px solid #3bb19b;
+    background-color: #fff;
+    color: #3bb19b;
+}

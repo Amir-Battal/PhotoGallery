@@ -1,20 +1,45 @@
+import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
-import Auth from "../../Auth";
+import Navbar from "../Navbar";
+import Grid from "../Grid";
+import axios from "axios";
+import PopupForm from "../PopupForm";
+import InputForm from "../InputForrm";
+import { IoAddCircleSharp } from "react-icons/io5";
+
+
 
 const Main = () => {
-    const handelLogout = () => {
-        Auth.logout();
-        window.location.reload();
-    };
+
+    const [photos, setPhotos] = useState([]);
+    const [updateUI, setUpdateUI] = useState("");
+    const [buttonPopup, setButtonPopup] = useState(false);
+    const [timedPopup, setTimedPopup] = useState(false);
+
+    useEffect(() => {
+        axios.get("http://localhost:3001/api/photo/get")
+            .then((res) => {
+                console.log(res.data);
+                setPhotos(res.data);
+
+            })
+            .catch((err) => console.log(err));
+    }, [updateUI]);
+
+    
 
     return (
         <div className={styles.main_container}>
-            <nav className={styles.navbar}>
-                <h1>Gallery</h1>
-                <button className={styles.white_btn} onClick={handelLogout}>
-                    Logout
-                </button>
-            </nav>
+            <Navbar/>
+            <button className={styles.button} onClick={() => setButtonPopup(true)}>
+                <IoAddCircleSharp />
+            </button>
+            
+            <PopupForm trigger={buttonPopup} setTrigger={setButtonPopup}>
+                <InputForm/>
+            </PopupForm>
+
+            <Grid photos={photos} />
         </div>
     );
 };

@@ -6,6 +6,10 @@ const Auth = {
         axios.defaults.headers.common['Authorization'] = user.token;
     },
 
+    auth: () => localStorage.getItem('user') !== null,
+
+    guest: () => localStorage.getItem('user') === null,
+
     logout: () => {
         delete axios.defaults.headers.common['Authorization'];
         localStorage.removeItem('user')
