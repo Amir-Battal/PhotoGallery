@@ -3,6 +3,7 @@ import Main from "./components/Main";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Auth from "./Auth";
+import MyPhoto from "./components/MyPhotos";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Route path="/" element={ Auth.auth() ? <Main/> : <Navigate replace to = "/login" />} />
       <Route path="/register" exact element={ Auth.guest() ? <Register/> : <Navigate replace to="/" />} />
       <Route path="/login" exact element={ Auth.guest() ? <Login/> : <Navigate replace to="/" />} />
+      <Route path="/myphoto" exact element={ <MyPhoto/> } />
     </Routes>
   );
 }

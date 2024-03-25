@@ -9,7 +9,11 @@ const Navbar = () => {
 
     return (
         <nav className={styles.navbar}>
-                <h1>Gallery</h1>
+                <div className={styles.rightSide}>
+                    {/* <h1>Gallery</h1> */}
+                    <a href="/">Gallery</a>
+                    <a href='/myphoto'>myPhotos</a>
+                </div>
                 <button className={styles.white_btn} onClick={handelLogout}>
                     Logout
                 </button>

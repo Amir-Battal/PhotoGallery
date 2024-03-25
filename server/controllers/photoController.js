@@ -16,11 +16,25 @@ exports.find = async (req, res) => {
     res.send(photo);
 }
 
+exports.getByAuthorId = async (req, res) => {
+    const authorId = req.params.id;
+    const photos = await Photo.find({ author: authorId });
+    console.log(photos);
+    res.send(photos);
+}
+
 
 exports.create = async (req, res) => {
-    let { title, description, photo } = req.body;
-    let data = { title, description, photo };
-    data.photo = req.file.filename;
+    const { title, description, author } = req.body;
+    const photo = req.file.filename;
+    // const author = req.user._id;
+
+    const data = {
+        title, 
+        description,
+        photo,
+        author
+    };
 
     console.log(data);
 
@@ -37,7 +51,7 @@ exports.create = async (req, res) => {
 
 exports.update = async (req, res) => {
     const id = req.params.id;
-    let data = {title, description} = req.body;
+    const data = req.body;
 
     Photo.updateOne({_id: id}, data)
         .then(() => {

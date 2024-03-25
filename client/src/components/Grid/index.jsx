@@ -9,6 +9,7 @@ import EditForm from "../EditForm";
 
 import styles from './styles.module.css';
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const Grid = ({ photos }) => {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -17,6 +18,9 @@ const Grid = ({ photos }) => {
     const [editedDescription, setEditedDescription] = useState("");
     const [editedId , setEditedId] = useState();
     const [msg, setMsg] = useState("");
+
+    const location = useLocation();
+    const currentPath = location.pathname;
 
 
     const largeImg = (index) => {
@@ -66,26 +70,30 @@ const Grid = ({ photos }) => {
                                 <p className={styles.description}>{photo.description}</p>
                             </div>
                             <ul className={styles.tools}>
-                                <button className={styles.updateButton} onClick={() => handleEdit(photo._id ,photo.title, photo.description)}>
-                                    <IoOptionsOutline />
-                                </button>
-                                <PopupForm styles trigger={buttonPopup} setTrigger={setButtonPopup}>
-                                    <EditForm
-                                        title={editedtitle}
-                                        description={editedDescription}
-                                        id={editedId}
-                                    />
-                                </PopupForm>
-                                <button className={styles.deleteButton} onClick={() => handleDelete(photo._id)}>
-                                    <IoTrashOutline />
-                                </button>
+                            {currentPath === '/myphoto' && (
+                                    <>
+                                        <button className={styles.updateButton} onClick={() => handleEdit(photo._id ,photo.title, photo.description)}>
+                                            <IoOptionsOutline />
+                                        </button>
+                                        <PopupForm styles trigger={buttonPopup} setTrigger={setButtonPopup}>
+                                            <EditForm
+                                                title={editedtitle}
+                                                description={editedDescription}
+                                                id={editedId}
+                                            />
+                                        </PopupForm>
+                                        <button className={styles.deleteButton} onClick={() => handleDelete(photo._id)}>
+                                            <IoTrashOutline />
+                                        </button>
+                                    </>
+                                )}
+                                
                             </ul>
                         </div>
                         <img
                             src={`http://localhost:3001/uploads/${photo.photo}`}
                             alt="grid_image"
                             onClick={() => largeImg(index)}
-                            // style={{ transform: selectedImage === index ? "scale(1.5)" : "scale(1)" }}
                         />
                     </div>
                 ))}

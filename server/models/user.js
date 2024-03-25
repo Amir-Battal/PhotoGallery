@@ -16,8 +16,14 @@ const ModelSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minlength: 6
+        minlength: 6    
     },
+    photos: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Photo"
+        }
+    ]
 }, {
     timestamps: true
 });
@@ -28,7 +34,7 @@ ModelSchema.methods.getData = function(){
         id: this._id,
         name: this.name,
         email: this.email,      
-        // photosList: this.photosList
+        photos: this.photos
     }
 }
 

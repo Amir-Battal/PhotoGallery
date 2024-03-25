@@ -7,8 +7,11 @@ const InputForm = (props) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [photo, setPhoto] = useState("");
+    const [author, setAuthor] = useState("");
     const [msg, setMsg] = useState("");
     const [error, setError] = useState("");
+
+    const user = JSON.parse(localStorage.getItem('user'));
 
     const handleSubmit = () => {
 
@@ -16,6 +19,8 @@ const InputForm = (props) => {
         formData.append("title", title);
         formData.append("description", description);
         formData.append("photo", photo);
+        formData.append("author", user.id)
+        setAuthor(user.id);
 
         axios.post('http://localhost:3001/api/photo/save', formData)
             .then((res) => {
