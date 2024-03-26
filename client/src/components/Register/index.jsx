@@ -28,7 +28,7 @@ const Register = () => {
         }
         
         try {
-            const url = "http://localhost:3001/api/auth/register";
+            const url = "https://photo-gallery-server.vercel.app/api/auth/register";
             const { data: res } = await axios.post(url, data)
                                             .then(res => {
                                                 Auth.login(res.data);
