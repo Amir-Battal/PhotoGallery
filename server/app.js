@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
 const corsOptions = {
-    origin: 'http://photo-gallery-server-indol.vercel.app',
+    origin: 'http://localhost:3000',
     credential: true,
     optionSuccessStatus: 200
 }
