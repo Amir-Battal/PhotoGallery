@@ -16,7 +16,7 @@ const Main = () => {
     const [timedPopup, setTimedPopup] = useState(false);
 
     useEffect(() => {
-        axios.get("https://photo-gallery-server/api/photo/get")
+        axios.get("http://localhost:3001/api/photo/get")
             .then((res) => {
                 console.log(res.data);
                 setPhotos(res.data);
