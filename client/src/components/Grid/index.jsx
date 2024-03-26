@@ -92,6 +92,7 @@ const Grid = ({ photos }) => {
         window.location.reload();
     };
 
+
     return (
         <>
             {currentPath === '/myphoto' && (
