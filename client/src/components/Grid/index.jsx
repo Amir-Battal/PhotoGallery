@@ -83,7 +83,7 @@ const Grid = ({ photos }) => {
         try {
             const user = JSON.parse(localStorage.getItem("user"));
             if (user) {
-                await axios.delete(`http://localhost:3001/api/photo/${id}/like`, { data: { userId: user.id } });
+                await axios.delete(`http://photo-gallery-server/api/photo/${id}/like`, { data: { userId: user.id } });
             }
         } catch (error) {
             console.log(error);
