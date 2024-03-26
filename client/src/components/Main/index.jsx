@@ -6,6 +6,7 @@ import axios from "axios";
 import PopupForm from "../PopupForm";
 import InputForm from "../InputForrm";
 import { IoAddCircleSharp } from "react-icons/io5";
+import Auth from "../../Auth";
 
 
 
@@ -31,13 +32,16 @@ const Main = () => {
     return (
         <div className={styles.main_container}>
             <Navbar/>
-            <button className={styles.button} onClick={() => setButtonPopup(true)}>
-                <IoAddCircleSharp />
-            </button>
-            
-            <PopupForm trigger={buttonPopup} setTrigger={setButtonPopup}>
-                <InputForm/>
-            </PopupForm>
+            {Auth.auth() && (
+                <>
+                    <button className={styles.button} onClick={() => setButtonPopup(true)}>
+                        <IoAddCircleSharp />
+                    </button>
+                    <PopupForm trigger={buttonPopup} setTrigger={setButtonPopup}>
+                        <InputForm/>
+                    </PopupForm>
+                </>
+            )}
 
             <Grid photos={photos} />
         </div>

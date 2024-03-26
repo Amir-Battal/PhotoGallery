@@ -7,16 +7,29 @@ const Navbar = () => {
         window.location.reload();
     };
 
+    const handleLogin = () => {
+        window.location = '/login';
+    }
+
     return (
         <nav className={styles.navbar}>
                 <div className={styles.rightSide}>
                     {/* <h1>Gallery</h1> */}
                     <a href="/">Gallery</a>
-                    <a href='/myphoto'>myPhotos</a>
+                    {Auth.auth() && (
+                        <a href='/myphoto'>myPhotos</a>
+                    )}
                 </div>
-                <button className={styles.white_btn} onClick={handelLogout}>
+                {Auth.auth() && (
+                    <button className={styles.white_btn} onClick={handelLogout}>
                     Logout
                 </button>
+                )}
+                {Auth.guest() && (
+                    <button className={styles.white_btn} onClick={handleLogin}>
+                        Login
+                    </button>
+                )}  
             </nav>
     );
 };

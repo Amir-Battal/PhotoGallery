@@ -10,6 +10,7 @@ import EditForm from "../EditForm";
 import styles from './styles.module.css';
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import Auth from "../../Auth";
 
 const Grid = ({ photos }) => {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -29,18 +30,6 @@ const Grid = ({ photos }) => {
             setCurrentUserId(user.id);
         }
     }, []);
-
-    // useEffect(() => {
-    //     const user = JSON.parse(localStorage.getItem("user"));
-    //     if (user) {
-    //       setCurrentUserId(user.id);
-    //     }
-      
-    //     const likedPhotosData = JSON.parse(localStorage.getItem("likedPhotos"));
-    //     if (likedPhotosData) {
-    //       setLikedPhotos(likedPhotosData);
-    //     }
-    //   }, []);
     
 
     const location = useLocation();
@@ -124,6 +113,9 @@ const Grid = ({ photos }) => {
                     <div className={styles.grid__item} key={photo._id}>
                         <div className={styles.details}>
                             <button className={styles.like}
+                                disabled = {
+                                    Auth.guest()
+                                }
                                 onClick = {
                                     photo.likes.includes(currentUserId)
                                     ?   () => handleUnlike(photo._id)

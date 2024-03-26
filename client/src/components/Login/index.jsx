@@ -36,9 +36,6 @@ const Login = () => {
         }
     };
 
-    const handleGuest = async (e) => {
-        window.location = "/";
-    };
     
     return(
         <div className={styles.login_container}>
@@ -69,8 +66,10 @@ const Login = () => {
                             تسجيل دخول
                         </button>
                     </form>
-                    <button onClick={() => handleGuest} className={styles.green_btn}>
+                    <button className={styles.green_btn}>
+                        <a className={styles.guest} href="/">
                             الدخول كضيف
+                        </a>
                     </button>
                 </div>
                 <div className={styles.right}>
