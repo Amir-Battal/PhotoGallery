@@ -22,7 +22,7 @@ exports.register = (req, res, next) => {
 
     User.findOne({email})
         .then(user => {
-            if(user) throw createError(422, "اسم المستخدم موجود مسبقا");
+            if(user) throw createError(422, "البريد الالكتروني مسجل مسبقا");
             return User.create(data);
         })
         .then(user => {

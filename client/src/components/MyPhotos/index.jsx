@@ -10,16 +10,12 @@ import InputForm from '../InputForrm';
 
 
 const MyPhoto = () => {
-
     const [photos, setPhotos] = useState([]);
     const [updateUI, setUpdateUI] = useState("");
     const [buttonPopup, setButtonPopup] = useState(false);
     const [timedPopup, setTimedPopup] = useState(false);
 
-
-
     const user = JSON.parse(localStorage.getItem('user'));
-
 
     useEffect(() => {
         axios.get(`http://localhost:3001/api/photo/author/${user.id}`)
@@ -33,10 +29,10 @@ const MyPhoto = () => {
     return (
         <div>
             <Navbar />
+            
             <button className={styles.button} onClick={() => setButtonPopup(true)}>
                 <IoAddCircleSharp />
             </button>
-
             <PopupForm trigger={buttonPopup} setTrigger={setButtonPopup}>
                 <InputForm/>
             </PopupForm>

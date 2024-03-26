@@ -14,6 +14,10 @@ const InputForm = (props) => {
     const user = JSON.parse(localStorage.getItem('user'));
 
     const handleSubmit = () => {
+        if(!photo) {
+            setError("يجب عليك اختيار صورة");
+            return;
+        }
 
         const formData = new FormData();
         formData.append("title", title);
@@ -33,6 +37,18 @@ const InputForm = (props) => {
             })
             .catch(err => console.log(err));
     }
+
+    const handleChange = (e) => {
+        const selectedFile = e.target.files[0];
+        if(selectedFile){
+            const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
+            if(!allowedFileTypes.includes(selectedFile.type)){
+                alert("الرجاء اختيار ملف من نوع JPEG أو JPG أو PNG.");
+            } else {
+                setPhoto(selectedFile);
+            }
+        }
+    };
 
     return (
         <div>
@@ -61,7 +77,8 @@ const InputForm = (props) => {
                     type="file"
                     name="file_picker"
                     id="file_picker"
-                    onChange={(e) => setPhoto(e.target.files[0])}
+                    onChange={handleChange}
+                    required
                 />
                 <button className={styles.addPhoto} type="submit">
                     إضافة الصورة

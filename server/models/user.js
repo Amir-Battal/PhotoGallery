@@ -23,7 +23,7 @@ const ModelSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Photo"
         }
-    ]
+    ],
 }, {
     timestamps: true
 });

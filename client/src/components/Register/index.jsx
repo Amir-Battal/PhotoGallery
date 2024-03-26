@@ -2,12 +2,14 @@ import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
+import Auth from "../../Auth";
 
 const Register = () => {
     const [data, setData] = useState({
         name: "",
         email: "",
-        password: ""
+        password: "",
+        confirmPassword: ""
     });
 
     const [error, setError] = useState("");
@@ -19,10 +21,20 @@ const Register = () => {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if(data.password !== data.confirmPassword){
+            setError("كلمة المرور غير متطابقة");
+            return;
+        }
+        
         try {
             const url = "http://localhost:3001/api/auth/register";
-            const { data: res } = await axios.post(url, data);
-            navigate("/login");
+            const { data: res } = await axios.post(url, data)
+                                            .then(res => {
+                                                Auth.login(res.data);
+                                                window.location = "/";
+                                            });
+            navigate("/");
             console.log(res.message);
         } catch (error) {
             if(
@@ -73,6 +85,15 @@ const Register = () => {
                             name="password"
                             onChange={handleChange}
                             value={data.password}
+                            required
+                            className={styles.input}
+                        />
+                        <input 
+                            type="password"
+                            placeholder="تأكيد كلمة المرور"
+                            name="confirmPassword"
+                            onChange={handleChange}
+                            value={data.confirmPassword}
                             required
                             className={styles.input}
                         />

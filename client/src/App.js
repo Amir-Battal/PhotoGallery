@@ -7,19 +7,11 @@ import MyPhoto from "./components/MyPhotos";
 
 
 function App() {
-
-  // const user = localStorage.getItem("user");
-
   return (
     <Routes>
-      {/* {user && <Route path="/" exact element={ Auth.auth() ? <Main/> : <Navigate replace to="/login" />} />} */}
-      {/* <Route path="/" element={ Auth.auth() ? <Main/> : <Navigate replace to = "/login" />} />
-      <Route path="/register" exact element={ Auth.guest() ? <Register/> : <Navigate replace to="/" />} />
-      <Route path="/login" exact element={ Auth.guest() ? <Login/> : <Navigate replace to="/" />} /> */}
-
       <Route path="/" element={<Main/>} />
-      <Route path="/register" element={<Register/>} />
-      <Route path="/login" element={<Login/>} />
+      <Route path="/register" element={Auth.guest() ? <Register/> : <Navigate replace to="/" />} />
+      <Route path="/login" element={Auth.guest() ? <Login/> : <Navigate replace to="/" />} />
 
       <Route path="/myphoto" exact element={ Auth.auth() ? <MyPhoto/> : <Navigate replace to="/" /> } />
     </Routes>

@@ -5,8 +5,6 @@ import { IoOptionsOutline } from "react-icons/io5";
 import { IoTrashOutline } from "react-icons/io5";
 import PopupForm from "../PopupForm";
 import EditForm from "../EditForm";
-
-
 import styles from './styles.module.css';
 import axios from "axios";
 import { useLocation } from "react-router-dom";
@@ -22,19 +20,16 @@ const Grid = ({ photos }) => {
     const [likedPhotos, setLikedPhotos] = useState([]);
     const [currentUserId, setCurrentUserId] = useState("");
 
-    
-
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));
         if(user) {
             setCurrentUserId(user.id);
         }
     }, []);
-    
 
     const location = useLocation();
     const currentPath = location.pathname;
-
+    const user = JSON.parse(localStorage.getItem("user"));
 
     const largeImg = (index) => {
         setSelectedImage(index);
@@ -64,50 +59,47 @@ const Grid = ({ photos }) => {
             .catch(err => console.log(err));
 
         window.location.reload();
-    }
-
+    };
 
     const handleLike = async (id) => {
         try {
             const user = JSON.parse(localStorage.getItem("user"));
             const likedUserIds = likedPhotos.map((photo) => photo.userId);
+
             if (user && !likedUserIds.includes(user.id)) {
                 await axios.post(`http://localhost:3001/api/photo/${id}/like`,
                                 { userId: user.id }
                 );
-
                 setLikedPhotos([...likedPhotos, { photoId: id, userId: user.id }]);
             }
         } catch (error) {
             console.log(error);
         }
-        window.location.reload();
 
+        window.location.reload();
     };
 
     const handleUnlike = async (id) => {
         try {
             const user = JSON.parse(localStorage.getItem("user"));
-            const likedUserIds = likedPhotos.map((photo) => photo.userId);
-            if (user && !likedUserIds.includes(user.id)) {
-                await axios.delete(`http://localhost:3001/api/photo/${id}/like`,
-                                { userId: user.id }
-                );
-
-                setLikedPhotos([...likedPhotos, { photoId: id, userId: user.id }]);
+            if (user) {
+                await axios.delete(`http://localhost:3001/api/photo/${id}/like`, { data: { userId: user.id } });
             }
         } catch (error) {
             console.log(error);
         }
+
         window.location.reload();
-    }
-
-    const user = JSON.parse(localStorage.getItem("user"));
-
+    };
 
     return (
         <>
-            <h1>المعرض</h1>
+            {currentPath === '/myphoto' && (
+                <h1>الصور التي قمت برفعها</h1>
+            ) }
+            {currentPath === '/' && (
+                <h1>المعرض</h1>
+            )}
             <div className={styles.grid}>
                 {photos.map((photo, index) => (
                     <div className={styles.grid__item} key={photo._id}>

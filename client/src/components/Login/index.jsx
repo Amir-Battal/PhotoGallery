@@ -5,7 +5,6 @@ import styles from "./styles.module.css";
 import Auth from "../../Auth";
 
 const Login = () => {
-    
     const [data, setData] = useState({ email: "", password: ""});
     const [error, setError] = useState("");
 
@@ -17,9 +16,6 @@ const Login = () => {
         e.preventDefault();
         try {
             const url = "http://localhost:3001/api/auth";
-            // const { data: res } = await axios.post(url, data);
-            // localStorage.setItem("token", res.data);
-            // window.location = "/";
             axios.post(url, data)
                 .then(res => {
                     Auth.login(res.data);
@@ -35,7 +31,6 @@ const Login = () => {
             }
         }
     };
-
     
     return(
         <div className={styles.login_container}>

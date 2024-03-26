@@ -1,9 +1,10 @@
 const Photo = require('../models/photo');
+const User = require('../models/user');
 const path = require('path');
 const fs = require('fs');
-// const { default: mongoose } = require('mongoose');
 const mongoose = require('mongoose');
 
+// Get All Photos
 exports.get = async (req, res) => {
     const allPhotos = await Photo.find()
                                 .sort({createdAt: "descending"});
@@ -11,13 +12,14 @@ exports.get = async (req, res) => {
     res.send(allPhotos);
 }
 
-
+// Find one photo
 exports.find = async (req, res) => {
     const id = req.params.id;
     const photo = await Photo.findById(id);
     res.send(photo);
 }
 
+// Get photos by AuthorId
 exports.getByAuthorId = async (req, res) => {
     const authorId = req.params.id;
     const photos = await Photo.find({ author: authorId });
@@ -25,12 +27,10 @@ exports.getByAuthorId = async (req, res) => {
     res.send(photos);
 }
 
-
+// Create new photo
 exports.create = async (req, res) => {
     const { title, description, author } = req.body;
     const photo = req.file.filename;
-    // const author = req.user._id;
-
     const data = {
         title, 
         description,
@@ -38,6 +38,7 @@ exports.create = async (req, res) => {
         author
     };
 
+    
     console.log(data);
 
     Photo.create(data)
@@ -47,10 +48,9 @@ exports.create = async (req, res) => {
             res.send(data);
         })
         .catch((err) => console.log(err));
-
 }
 
-
+// Update photo
 exports.update = async (req, res) => {
     const id = req.params.id;
     const data = req.body;
@@ -63,7 +63,7 @@ exports.update = async (req, res) => {
         .catch((err) => console.log(err))
 }
 
-
+// Delete photo
 exports.delete = async (req, res) => {
     const id = req.params.id;
 
@@ -96,8 +96,7 @@ exports.delete = async (req, res) => {
     }
 }
 
-
-
+// Like 
 exports.likePhoto = async (req, res) => {
     const id = req.params.id;
     const { userId } = req.body;
@@ -120,7 +119,7 @@ exports.likePhoto = async (req, res) => {
     }
 };
 
-
+// UnLike
 exports.unlikePhoto = async (req, res) => {
     const id = req.params.id;
     const { userId } = req.body;

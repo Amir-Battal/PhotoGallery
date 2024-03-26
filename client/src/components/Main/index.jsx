@@ -9,9 +9,7 @@ import { IoAddCircleSharp } from "react-icons/io5";
 import Auth from "../../Auth";
 
 
-
 const Main = () => {
-
     const [photos, setPhotos] = useState([]);
     const [updateUI, setUpdateUI] = useState("");
     const [buttonPopup, setButtonPopup] = useState(false);
@@ -26,8 +24,6 @@ const Main = () => {
             })
             .catch((err) => console.log(err));
     }, [updateUI]);
-
-    
 
     return (
         <div className={styles.main_container}>

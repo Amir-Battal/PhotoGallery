@@ -8,7 +8,6 @@ const EditForm = (props) => {
     const [msg, setMsg] = useState("");
 
     const handleSubmit = async (e) => {
-        
         const data = {
             title: title,
             description: description
@@ -24,7 +23,6 @@ const EditForm = (props) => {
                 }
             })
             .catch(err => console.log(err));
-        
     };
 
     return (

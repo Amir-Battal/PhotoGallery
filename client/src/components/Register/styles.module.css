@@ -5,6 +5,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	direction: rtl;
 }
 
 .signup_form_container {
@@ -95,4 +96,13 @@
 	background-color: #3bb19b;
 	color: white;
 	margin: 10px;
+}
+
+
+.green_btn:hover{
+	background-color: #0e6a59;
+}
+
+.white_btn:hover{
+	background-color: #dbd9d9;
 }
