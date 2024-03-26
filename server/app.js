@@ -5,8 +5,19 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
+
+const allowedOrigins = [
+    'http://localhost:3000',
+]
+
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: (origin, callback) => {
+        if(allowedOrigins.indexOf(origin) !== -1 || !origin){
+            callback(null, true)
+        } else {
+            callback(new Error("Not allowed by CORS"))
+        }
+    },
     credential: true,
     optionSuccessStatus: 200
 }
