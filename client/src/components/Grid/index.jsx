@@ -72,7 +72,7 @@ const Grid = ({ photos }) => {
                 );
                 setLikedPhotos([...likedPhotos, { photoId: id, userId: user.id }]);
             }
-        } catch (error) {
+        } catch (error) {   
             console.log(error);
         }
 
