@@ -35,6 +35,10 @@ const Login = () => {
             }
         }
     };
+
+    const handleGuest = async (e) => {
+        window.location = "/";
+    };
     
     return(
         <div className={styles.login_container}>
@@ -65,6 +69,9 @@ const Login = () => {
                             تسجيل دخول
                         </button>
                     </form>
+                    <button onClick={() => handleGuest} className={styles.green_btn}>
+                            الدخول كضيف
+                    </button>
                 </div>
                 <div className={styles.right}>
                     <h1>ليس لدي حساب</h1>

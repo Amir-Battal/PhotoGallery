@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { IoHeart } from "react-icons/io5";
 import { IoOptionsOutline } from "react-icons/io5";
@@ -18,6 +18,30 @@ const Grid = ({ photos }) => {
     const [editedDescription, setEditedDescription] = useState("");
     const [editedId , setEditedId] = useState();
     const [msg, setMsg] = useState("");
+    const [likedPhotos, setLikedPhotos] = useState([]);
+    const [currentUserId, setCurrentUserId] = useState("");
+
+    
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if(user) {
+            setCurrentUserId(user.id);
+        }
+    }, []);
+
+    // useEffect(() => {
+    //     const user = JSON.parse(localStorage.getItem("user"));
+    //     if (user) {
+    //       setCurrentUserId(user.id);
+    //     }
+      
+    //     const likedPhotosData = JSON.parse(localStorage.getItem("likedPhotos"));
+    //     if (likedPhotosData) {
+    //       setLikedPhotos(likedPhotosData);
+    //     }
+    //   }, []);
+    
 
     const location = useLocation();
     const currentPath = location.pathname;
@@ -51,8 +75,45 @@ const Grid = ({ photos }) => {
             .catch(err => console.log(err));
 
         window.location.reload();
-    
     }
+
+
+    const handleLike = async (id) => {
+        try {
+            const user = JSON.parse(localStorage.getItem("user"));
+            const likedUserIds = likedPhotos.map((photo) => photo.userId);
+            if (user && !likedUserIds.includes(user.id)) {
+                await axios.post(`http://localhost:3001/api/photo/${id}/like`,
+                                { userId: user.id }
+                );
+
+                setLikedPhotos([...likedPhotos, { photoId: id, userId: user.id }]);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        window.location.reload();
+
+    };
+
+    const handleUnlike = async (id) => {
+        try {
+            const user = JSON.parse(localStorage.getItem("user"));
+            const likedUserIds = likedPhotos.map((photo) => photo.userId);
+            if (user && !likedUserIds.includes(user.id)) {
+                await axios.delete(`http://localhost:3001/api/photo/${id}/like`,
+                                { userId: user.id }
+                );
+
+                setLikedPhotos([...likedPhotos, { photoId: id, userId: user.id }]);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        window.location.reload();
+    }
+
+    const user = JSON.parse(localStorage.getItem("user"));
 
 
     return (
@@ -60,10 +121,23 @@ const Grid = ({ photos }) => {
             <h1>المعرض</h1>
             <div className={styles.grid}>
                 {photos.map((photo, index) => (
-                    <div className={styles.grid__item}>
+                    <div className={styles.grid__item} key={photo._id}>
                         <div className={styles.details}>
-                            <button>
-                                <IoHeart />
+                            <button className={styles.like}
+                                onClick = {
+                                    photo.likes.includes(currentUserId)
+                                    ?   () => handleUnlike(photo._id)
+                                    :   () => handleLike(photo._id)
+                                }
+                            >
+                            <IoHeart
+                                color={
+                                    photo.likes.includes(currentUserId)
+                                    ? "red"
+                                    : "gray"
+                                }
+                            />
+                            {photo.likes.length}
                             </button>
                             <div className={styles.photoHeader}>
                                 <h3 className={styles.title}>{photo.title}</h3>
@@ -95,6 +169,9 @@ const Grid = ({ photos }) => {
                             alt="grid_image"
                             onClick={() => largeImg(index)}
                         />
+                        <p className={styles.likesCount}>
+                            Likes: {photo.likes.length}
+                        </p>
                     </div>
                 ))}
             </div>

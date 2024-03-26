@@ -101,7 +101,6 @@ h1 {
     background: none;
     border: none;
     font-size: 40px;
-    /* margin-top: 15px; */
     cursor: pointer;
     color: #3bb19b;
 }
@@ -118,5 +117,18 @@ h1 {
     color: #933535;
 }
 
+.like{
+    border: none;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    font-size: 30px;
+    cursor: pointer;
+    text-align: center;
+}
 
+.like:hover{
+    background-color: #e6e3e3;
+}
 

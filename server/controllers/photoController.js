@@ -1,6 +1,8 @@
 const Photo = require('../models/photo');
 const path = require('path');
 const fs = require('fs');
+// const { default: mongoose } = require('mongoose');
+const mongoose = require('mongoose');
 
 exports.get = async (req, res) => {
     const allPhotos = await Photo.find()
@@ -93,3 +95,51 @@ exports.delete = async (req, res) => {
         res.status(500).send('حدث خطأ أثناء الحصول على بيانات الصورة');
     }
 }
+
+
+
+exports.likePhoto = async (req, res) => {
+    const id = req.params.id;
+    const { userId } = req.body;
+
+    try {
+        const photo = await Photo.findById(id);
+
+        if (!photo) {
+            return res.status(404).json({ message: "الصورة غير موجودة" });
+        }
+
+        photo.likes.push(userId);
+
+        await photo.save();
+
+        res.status(200).json({ message: "تم الإعجاب بالصورة بنجاح", photo });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "حدث خطأ أثناء الإعجاب بالصورة" });
+    }
+};
+
+
+exports.unlikePhoto = async (req, res) => {
+    const id = req.params.id;
+    const { userId } = req.body;
+
+    try {
+        const photo = await Photo.findById(id);
+
+        if (!photo) {
+            return res.status(404).json({ message: "الصورة غير موجودة" });
+        }
+
+        const index = photo.likes.indexOf(userId);
+        photo.likes.splice(index, 1);
+
+        await photo.save();
+
+        res.status(200).json({ message: "تم حذف الـ like بنجاح", photo });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "حدث خطأ أثناء حذف الـ like" });
+    }
+};
