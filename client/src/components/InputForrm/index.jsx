@@ -13,7 +13,10 @@ const InputForm = (props) => {
 
     const user = JSON.parse(localStorage.getItem('user'));
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+
+        e.preventDefault();
+
         if(!photo) {
             setError("يجب عليك اختيار صورة");
             return;
@@ -28,16 +31,29 @@ const InputForm = (props) => {
 
         const url = "https://photo-gallery-server-indol.vercel.app/api/photo/save";
 
-        await axios.post(url, formData)
-            .then((res) => {
-                console.log(res);
-                if(res.data.Status === 'Sucess'){
-                    setMsg("تم رفع الملف بنحاح");
-                } else {
-                    setMsg("هناك خطأ ما")
-                }
-            })
-            .catch(err => console.log(err));
+        // await axios.post(url, formData)
+        //     .then((res) => {
+        //         console.log(res);
+        //         if(res.data.Status === 'Sucess'){
+        //             setMsg("تم رفع الملف بنحاح");
+        //         } else {
+        //             setMsg("هناك خطأ ما")
+        //         }
+        //     })
+        //     .catch(err => console.log(err));
+
+        try {
+            const url = "https://photo-gallery-server-indol.vercel.app/api/photo/save";
+            const response = await axios.post(url, formData);
+            console.log(response.data);
+            if (response.data.Status === 'Success') {
+                setMsg("تم رفع الملف بنجاح");
+            } else {
+                setMsg("هناك خطأ ما");
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
     
 
@@ -55,7 +71,7 @@ const InputForm = (props) => {
 
     return (
         <div>
-            <form className={styles.formContainer} onSubmit={handleSubmit}>
+            <form className={styles.formContainer} onSubmit={handleSubmit} encType='multipart/form-data'>
                 <h1>إضافة صورة جديدة</h1>
                 <label className={styles.label}>عنوان الصورة</label>
                 <input

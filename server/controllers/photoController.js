@@ -29,19 +29,20 @@ exports.getByAuthorId = async (req, res) => {
 
 // Create new photo
 exports.create = async (req, res) => {
-    console.log("Before Data");
-
     const { title, description, author } = req.body;
+
+    if(!req.file){
+        return res.status(400).json({ message: "الرجاء تحميل الصوردة"});
+    }
+
     const photo = req.file.filename;
     const data = {
-        title,  
+        title, 
         description,
         photo,
         author
     };
 
-    console.log("after Data");
-    
     
     console.log(data);
 
