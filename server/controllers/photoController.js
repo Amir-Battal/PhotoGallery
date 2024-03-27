@@ -34,7 +34,7 @@ exports.create = async (req, res) => {
     const { title, description, author } = req.body;
     const photo = req.file.filename;
     const data = {
-        title, 
+        title,  
         description,
         photo,
         author

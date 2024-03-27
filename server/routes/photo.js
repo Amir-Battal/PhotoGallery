@@ -10,7 +10,7 @@ router.get("/:id", controller.find);
 
 router.get("/author/:id", controller.getByAuthorId);
 
-router.post("/save", uploadMiddleware.single("photo"), controller.create);
+router.post('/save', uploadMiddleware.single("photo"), controller.create);
 
 router.put('/:id', controller.update);
 
