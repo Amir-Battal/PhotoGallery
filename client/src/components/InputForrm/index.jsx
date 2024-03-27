@@ -13,10 +13,7 @@ const InputForm = (props) => {
 
     const user = JSON.parse(localStorage.getItem('user'));
 
-    const handleSubmit =  (e) => {
-
-        e.preventDefault();
-
+    const handleSubmit = () => {
         if(!photo) {
             setError("يجب عليك اختيار صورة");
             return;
@@ -29,7 +26,7 @@ const InputForm = (props) => {
         formData.append("author", user.id)
         setAuthor(user.id);
 
-        axios.post('https://photo-gallery-server-indol.vercel.app/api/photo/save', formData)
+        axios.post('http://localhost:3001/api/photo/save', formData)
             .then((res) => {
                 console.log(res);
                 if(res.data.Status === 'Sucess'){
@@ -81,7 +78,7 @@ const InputForm = (props) => {
                     name="file_picker"
                     id="file_picker"
                     onChange={handleChange}
-                    // required
+                    required
                 />
                 <button className={styles.addPhoto} type="submit">
                     إضافة الصورة

@@ -13,7 +13,7 @@ const EditForm = (props) => {
             description: description
         };
 
-        axios.put(`https://photo-gallery-server-indol.vercel.app/api/photo/${props.id}`, data)
+        axios.put(`http://localhost:3001/api/photo/${props.id}`, data)
             .then((res) => {
                 console.log(res);
                 if(res.data.Status === 'Sucess'){

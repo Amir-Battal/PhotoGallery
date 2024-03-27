@@ -7,8 +7,7 @@ var logger = require('morgan');
 const cors = require('cors');
 
 const allowedOrigins = [
-    "https://photo-gallery-client.vercel.app",
-    "http://localhost:3000"
+    "http://localhost:3000",
 ]
 
 const corsOptions = {
