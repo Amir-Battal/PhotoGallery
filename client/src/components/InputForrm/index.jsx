@@ -13,7 +13,7 @@ const InputForm = (props) => {
 
     const user = JSON.parse(localStorage.getItem('user'));
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
 
         e.preventDefault();
 
@@ -29,10 +29,7 @@ const InputForm = (props) => {
         formData.append("author", user.id)
         setAuthor(user.id);
 
-        const url = "https://photo-gallery-server-indol.vercel.app/api/photo/save";
-        const data = formData;
-
-        await axios.post(url, data)
+        axios.post('https://photo-gallery-server-indol.vercel.app/api/photo/save', formData)
             .then((res) => {
                 console.log(res);
                 if(res.data.Status === 'Sucess'){
@@ -42,11 +39,9 @@ const InputForm = (props) => {
                 }
             })
             .catch(err => console.log(err));
-
     }
-    
 
-    const handleChange = async (e) => {
+    const handleChange = (e) => {
         const selectedFile = e.target.files[0];
         if(selectedFile){
             const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
@@ -60,7 +55,7 @@ const InputForm = (props) => {
 
     return (
         <div>
-            <form className={styles.formContainer} onSubmit={handleSubmit} encType='multipart/form-data'>
+            <form className={styles.formContainer} onSubmit={handleSubmit} encType="multipart/form-data">
                 <h1>إضافة صورة جديدة</h1>
                 <label className={styles.label}>عنوان الصورة</label>
                 <input
