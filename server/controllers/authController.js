@@ -26,7 +26,7 @@ exports.register = (req, res, next) => {
             return User.create(data);
         })
         .then(user => {
-            res.json(user.getData());
+            res.json(user.signJwt());
         })
         .catch(next);
 };

@@ -37,7 +37,7 @@ exports.create = async (req, res) => {
         photo,
         author
     };
-
+    
     
     console.log(data);
 
