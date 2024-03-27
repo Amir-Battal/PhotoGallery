@@ -30,8 +30,9 @@ const InputForm = (props) => {
         setAuthor(user.id);
 
         const url = "https://photo-gallery-server-indol.vercel.app/api/photo/save";
+        const data = formData;
 
-        await axios.post(url, formData)
+        await axios.post(url, data)
             .then((res) => {
                 console.log(res);
                 if(res.data.Status === 'Sucess'){
