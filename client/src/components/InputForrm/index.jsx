@@ -31,29 +31,17 @@ const InputForm = (props) => {
 
         const url = "https://photo-gallery-server-indol.vercel.app/api/photo/save";
 
-        // await axios.post(url, formData)
-        //     .then((res) => {
-        //         console.log(res);
-        //         if(res.data.Status === 'Sucess'){
-        //             setMsg("تم رفع الملف بنحاح");
-        //         } else {
-        //             setMsg("هناك خطأ ما")
-        //         }
-        //     })
-        //     .catch(err => console.log(err));
+        await axios.post(url, formData)
+            .then((res) => {
+                console.log(res);
+                if(res.data.Status === 'Sucess'){
+                    setMsg("تم رفع الملف بنحاح");
+                } else {
+                    setMsg("هناك خطأ ما")
+                }
+            })
+            .catch(err => console.log(err));
 
-        try {
-            const url = "https://photo-gallery-server-indol.vercel.app/api/photo/save";
-            const response = await axios.post(url, formData);
-            console.log(response.data);
-            if (response.data.Status === 'Success') {
-                setMsg("تم رفع الملف بنجاح");
-            } else {
-                setMsg("هناك خطأ ما");
-            }
-        } catch (error) {
-            console.error(error);
-        }
     }
     
 
