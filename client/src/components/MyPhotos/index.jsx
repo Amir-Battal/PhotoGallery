@@ -17,8 +17,8 @@ const MyPhoto = () => {
 
     const user = JSON.parse(localStorage.getItem('user'));
 
-    useEffect( async () => {
-        await axios.get(`https://photo-gallery-server-indol.vercel.app/api/photo/author/${user.id}`)
+    useEffect(() => {
+        axios.get(`https://photo-gallery-server-indol.vercel.app/api/photo/author/${user.id}`)
             .then((res) => {
                 console.log(res.data);
                 setPhotos(res.data);

@@ -13,7 +13,7 @@ const InputForm = (props) => {
 
     const user = JSON.parse(localStorage.getItem('user'));
 
-    const handleSubmit = async (e) => {
+    const handleSubmit =  (e) => {
 
         e.preventDefault();
 
@@ -29,7 +29,7 @@ const InputForm = (props) => {
         formData.append("author", user.id)
         setAuthor(user.id);
 
-        await axios.post('https://photo-gallery-server-indol.vercel.app/api/photo/save', formData)
+        axios.post('https://photo-gallery-server-indol.vercel.app/api/photo/save', formData)
             .then((res) => {
                 console.log(res);
                 if(res.data.Status === 'Sucess'){
