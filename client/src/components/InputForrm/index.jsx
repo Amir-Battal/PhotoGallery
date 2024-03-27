@@ -28,7 +28,7 @@ const InputForm = (props) => {
 
         const url = "https://photo-gallery-server-indol.vercel.app/api/photo/save";
 
-        await axios.post(url, data)
+        await axios.post(url, formData)
             .then((res) => {
                 console.log(res);
                 if(res.data.Status === 'Sucess'){
