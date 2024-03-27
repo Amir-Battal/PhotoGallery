@@ -19,6 +19,8 @@ const InputForm = (props) => {
             return;
         }
 
+        console.log("in submit")
+
         const formData = new FormData();
         formData.append("title", title);
         formData.append("description", description);
