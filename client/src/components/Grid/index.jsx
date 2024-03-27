@@ -67,7 +67,7 @@ const Grid = ({ photos }) => {
             const likedUserIds = likedPhotos.map((photo) => photo.userId);
 
             if (user && !likedUserIds.includes(user.id)) {
-                await axios.post(`http://localhost:3001/api/photo/${id}/like`,
+                await axios.post(`/api/photo/${id}/like`,
                                 { userId: user.id }
                 );
                 setLikedPhotos([...likedPhotos, { photoId: id, userId: user.id }]);
