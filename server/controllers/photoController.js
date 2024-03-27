@@ -28,13 +28,8 @@ exports.getByAuthorId = async (req, res) => {
 }
 
 // Create new photo
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
     const { title, description, author } = req.body;
-
-    if(!req.file){
-        return res.status(400).json({ message: "الرجاء تحميل الصوردة"});
-    }
-
     const photo = req.file.filename;
     const data = {
         title, 
@@ -42,8 +37,6 @@ exports.create = (req, res) => {
         photo,
         author
     };
-
-    
     
     console.log(data);
 
@@ -54,6 +47,7 @@ exports.create = (req, res) => {
             res.send(data);
         })
         .catch((err) => console.log(err));
+
 }
 
 // Update photo
