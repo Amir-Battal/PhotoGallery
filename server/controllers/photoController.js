@@ -29,6 +29,8 @@ exports.getByAuthorId = async (req, res) => {
 
 // Create new photo
 exports.create = async (req, res) => {
+    console.log("Before Data");
+
     const { title, description, author } = req.body;
     const photo = req.file.filename;
     const data = {
@@ -37,6 +39,8 @@ exports.create = async (req, res) => {
         photo,
         author
     };
+
+    console.log("after Data");
     
     
     console.log(data);
