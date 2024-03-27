@@ -55,7 +55,7 @@ const InputForm = (props) => {
 
     return (
         <div>
-            <form className={styles.formContainer} onSubmit={handleSubmit} encType="multipart/form-data">
+            <form className={styles.formContainer} onSubmit={handleSubmit}>
                 <h1>إضافة صورة جديدة</h1>
                 <label className={styles.label}>عنوان الصورة</label>
                 <input
