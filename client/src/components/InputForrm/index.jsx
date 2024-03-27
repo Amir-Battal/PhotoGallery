@@ -20,11 +20,11 @@ const InputForm = (props) => {
         }
 
         const formData = new FormData();
-        await formData.append("title", title);
-        await formData.append("description", description);
-        await formData.append("photo", photo);
-        await formData.append("author", user.id)
-        await setAuthor(user.id);
+        formData.append("title", title);
+        formData.append("description", description);
+        formData.append("photo", photo);
+        formData.append("author", user.id)
+        setAuthor(user.id);
 
         const url = "https://photo-gallery-server-indol.vercel.app/api/photo/save";
         const data = formData;
@@ -41,7 +41,7 @@ const InputForm = (props) => {
             .catch(err => console.log(err));
     }
 
-    const handleChange = (e) => {
+    const handleChange = async (e) => {
         const selectedFile = e.target.files[0];
         if(selectedFile){
             const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
