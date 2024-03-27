@@ -14,9 +14,9 @@ const Main = () => {
     const [updateUI, setUpdateUI] = useState("");
     const [buttonPopup, setButtonPopup] = useState(false);
     const [timedPopup, setTimedPopup] = useState(false);
-
+    
     useEffect(() => {
-        axios.get("/api/photo/get")
+        axios.get("https://photo-gallery-server-indol.vercel.app/api/photo/get")
             .then((res) => {
                 console.log(res.data);
                 setPhotos(res.data);
