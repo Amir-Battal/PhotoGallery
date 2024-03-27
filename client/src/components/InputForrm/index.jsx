@@ -13,7 +13,7 @@ const InputForm = (props) => {
 
     const user = JSON.parse(localStorage.getItem('user'));
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if(!photo) {
             setError("يجب عليك اختيار صورة");
             return;
@@ -26,7 +26,10 @@ const InputForm = (props) => {
         formData.append("author", user.id)
         setAuthor(user.id);
 
-        axios.post('https://photo-gallery-server-indol.vercel.app/api/photo/save', formData)
+        const url = "https://photo-gallery-server-indol.vercel.app/api/photo/save";
+        const data = formData;
+
+        await axios.post(url, data)
             .then((res) => {
                 console.log(res);
                 if(res.data.Status === 'Sucess'){
