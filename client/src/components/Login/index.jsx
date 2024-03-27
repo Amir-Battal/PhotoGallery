@@ -15,7 +15,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const url = "http://localhost:3001/api/auth";
+            const url = "https://photo-gallery-server-indol.vercel.app/api/auth";
             axios.post(url, data)
                 .then(res => {
                     Auth.login(res.data);

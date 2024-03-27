@@ -47,7 +47,7 @@ const Grid = ({ photos }) => {
     };
 
     const handleDelete = async (id) => {
-        await axios.delete(`http://localhost:3001/api/photo/${id}`)
+        await axios.delete(`https://photo-gallery-server-indol.vercel.app/api/photo/${id}`)
             .then((res) => {
                 console.log(res);
                 if(res.data.Status === 'Sucess'){
@@ -83,7 +83,7 @@ const Grid = ({ photos }) => {
         try {
             const user = JSON.parse(localStorage.getItem("user"));
             if (user) {
-                await axios.delete(`http://localhost:3001/api/photo/${id}/like`, { data: { userId: user.id } });
+                await axios.delete(`https://photo-gallery-server-indol.vercel.app/api/photo/${id}/like`, { data: { userId: user.id } });
             }
         } catch (error) {
             console.log(error);
@@ -150,7 +150,7 @@ const Grid = ({ photos }) => {
                             </ul>
                         </div>
                         <img
-                            src={`http://localhost:3001/uploads/${photo.photo}`}
+                            src={`https://photo-gallery-server-indol.vercel.app/uploads/${photo.photo}`}
                             alt="grid_image"
                             onClick={() => largeImg(index)}
                         />
@@ -163,7 +163,7 @@ const Grid = ({ photos }) => {
             {selectedImage !== null && (
                 <div className={styles.largedContainer} onClick={resetImg}>
                     <img
-                        src={`http://localhost:3001/uploads/${photos[selectedImage].photo}`}
+                        src={`https://photo-gallery-server-indol.vercel.app/uploads/${photos[selectedImage].photo}`}
                         alt="larged_image"
                         className={styles.largedImage}
                     />
