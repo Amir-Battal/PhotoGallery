@@ -29,31 +29,38 @@ exports.getByAuthorId = async (req, res) => {
 
 // Create new photo
 exports.create = async (req, res) => {
-    const { title, description, author } = req.body;
+    try {
+        const { title, description, author } = req.body;
 
-    if(!req.file){
-        return res.status(400).json({ message: "الرجاء تحميل الصوردة"});
+        // التحقق من وجود الصورة في الطلب
+        if (!req.file) {
+            return res.status(400).json({ message: "الرجاء تحميل الصورة" });
+        }
+
+        // استخراج اسم الملف وحفظه في الداتا
+        const photo = req.file.filename;
+        const data = {
+            title,  
+            description,
+            photo,
+            author
+        };
+
+        // إنشاء الصورة في قاعدة البيانات
+        const createdPhoto = await Photo.create(data);
+
+        console.log("تم التحميل بنجاح");
+        console.log(createdPhoto);
+
+        // إرسال رد ناجح بعد إنشاء الصورة
+        return res.status(201).json({ message: "تم رفع الملف بنجاح", photo: createdPhoto });
+    } catch (error) {
+        console.log(error);
+        // إرسال رد خطأ في حالة وقوع أي استثناء
+        return res.status(500).json({ message: "حدث خطأ أثناء رفع الصورة" });
     }
-
-    const photo = req.file.filename;
-    const data = {
-        title, 
-        description,
-        photo,
-        author
-    };
-
-    
-    console.log(data);
-
-    Photo.create(data)
-        .then((data) => {
-            console.log("تم التحميل بنجاح");
-            console.log(data);
-            res.send(data);
-        })
-        .catch((err) => console.log(err));
 }
+
 
 // Update photo
 exports.update = async (req, res) => {
