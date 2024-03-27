@@ -19,14 +19,12 @@ const InputForm = (props) => {
             return;
         }
 
-        console.log("in submit")
-
         const formData = new FormData();
-        formData.append("title", title);
-        formData.append("description", description);
-        formData.append("photo", photo);
-        formData.append("author", user.id)
-        setAuthor(user.id);
+        await formData.append("title", title);
+        await formData.append("description", description);
+        await formData.append("photo", photo);
+        await formData.append("author", user.id)
+        await setAuthor(user.id);
 
         const url = "https://photo-gallery-server-indol.vercel.app/api/photo/save";
         const data = formData;
