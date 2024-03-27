@@ -28,28 +28,16 @@ const InputForm = (props) => {
 
         const url = "https://photo-gallery-server-indol.vercel.app/api/photo/save";
 
-        // await axios.post(url, data)
-        //     .then((res) => {
-        //         console.log(res);
-        //         if(res.data.Status === 'Sucess'){
-        //             setMsg("تم رفع الملف بنحاح");
-        //         } else {
-        //             setMsg("هناك خطأ ما")
-        //         }
-        //     })
-        //     .catch(err => console.log(err));
-
-        try {
-            const res = await axios.post(url, formData);
-            console.log(res);
-            if(res.data.Status === 'Sucess'){
-                setMsg("تم رفع الملف بنحاح");
-            } else {
-                setMsg("هناك خطأ ما")
-            }
-        } catch (err) {
-            console.log(err);
-        }
+        await axios.post(url, data)
+            .then((res) => {
+                console.log(res);
+                if(res.data.Status === 'Sucess'){
+                    setMsg("تم رفع الملف بنحاح");
+                } else {
+                    setMsg("هناك خطأ ما")
+                }
+            })
+            .catch(err => console.log(err));
     }
     
 
