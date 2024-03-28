@@ -12,13 +12,13 @@
 
 <h4 align="center">هذا المشروع متعلق بدورة تطوير تطبيقات الويب بلغة JavaScript من <a href="https://academy.hsoub.com/learn/javascript-application-development/" target="_blank">اكاديمية حسوب</a>.</h4>
 
-<p align="center">
-  <a href="#key-features">المزايا الريئيسة</a> •
-  <a href="#how-to-use">طريقة الاستخدام</a> •
-  <a href="#download">التشغيل</a> •
-  <a href="#credits">بناء التطبيق</a> •
-  <a href="#license">التراخيص</a>
-</p>
+<h4>الملخص التنفيذي</h4>
+<ul>
+  <li>المزايا الريئيسة</li>
+  <li>طريقة الاستخدام</li>
+  <li>بناء التطبيق</li>
+  <li>التراخيص</li>
+</ul>
 
 
 ## المزايا الرئيسية
@@ -75,7 +75,7 @@ $ nodemon start
 
 ## بناء التطبيق
 
-هذا التطبيق تم بناءه باستخدام التقنيات التالية
+هذا التطبيق تم بناؤه باستخدام التقنيات التالية
 
 - [React.js](https://react.dev/)
 - [Node.js](https://nodejs.org/)
