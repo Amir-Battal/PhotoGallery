@@ -1,0 +1,26 @@
+.deleteAlert{
+    direction: rtl;
+}
+
+
+.btns{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.btns button{
+    width: 100px;
+    height: 100px;
+    background-color: #fff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 40px;
+}
+
+
+.btns button:hover{
+    background-color: #d2d2d2;
+}

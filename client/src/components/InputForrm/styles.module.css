@@ -48,3 +48,30 @@
     background-color: #fff;
     color: #3bb19b;
 }
+
+.inputError{
+	width: 70%;
+    height: 30px;
+    border: 1px solid #000;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.3s;
+	border: 1px solid #fc8181;
+}
+
+.inputError:focus{
+    border: 3px solid #3bb19b;
+    outline: none;
+}
+
+.inputError::placeholder{
+    padding: 0 10px;
+    font-size: 15px;
+}
+
+.error_msg {
+	width: 70%;
+	margin: 0;
+	font-size: 14px;
+	color: #f34646;
+}

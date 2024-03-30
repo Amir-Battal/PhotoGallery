@@ -30,14 +30,14 @@ exports.getByAuthorId = async (req, res) => {
 // Create new photo
 exports.create = async (req, res) => {
     const { title, description, author } = req.body;
-    const photo = req.file.filename;
+    const photo = req.file.filename; 
+
     const data = {
         title, 
         description,
         photo,
         author
     };
-    console.log(data);
 
     Photo.create(data)
         .then((data) => {
@@ -46,8 +46,8 @@ exports.create = async (req, res) => {
             res.send(data);
         })
         .catch((err) => console.log(err));
-
 }
+
 
 // Update photo
 exports.update = async (req, res) => {
@@ -94,6 +94,7 @@ exports.delete = async (req, res) => {
         res.status(500).send('حدث خطأ أثناء الحصول على بيانات الصورة');
     }
 }
+
 
 // Like 
 exports.likePhoto = async (req, res) => {

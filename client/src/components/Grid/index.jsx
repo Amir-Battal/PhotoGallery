@@ -9,8 +9,11 @@ import styles from './styles.module.css';
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import Auth from "../../Auth";
+import DeleteAlert from "../DeleteAlert";
 
-const Grid = ({ photos }) => {
+const Grid = ({status}) => {
+    const [photos, setPhotos] = useState([]);
+    const [updateUI, setUpdateUI] = useState("");
     const [selectedImage, setSelectedImage] = useState(null);
     const [buttonPopup, setButtonPopup] = useState(false);
     const [editedtitle, setEditedTitle] = useState("");
@@ -19,13 +22,34 @@ const Grid = ({ photos }) => {
     const [msg, setMsg] = useState("");
     const [likedPhotos, setLikedPhotos] = useState([]);
     const [currentUserId, setCurrentUserId] = useState("");
+    const [deleteStatus, setDeleteStatus] = useState(false);
+    const [deletedId, setDeletedId] = useState();
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));
         if(user) {
             setCurrentUserId(user.id);
         }
+
+        if(currentPath === '/myphoto'){
+            axios.get(`http://localhost:3001/api/photo/author/${user.id}`)
+            .then((res) => {
+                console.log(res.data);
+                setPhotos(res.data);
+            })
+            .catch((err) => console.log(err));  
+        } else if (currentPath === '/'){
+            axios.get("http://localhost:3001/api/photo/get")
+            .then((res) => {
+                console.log(res.data);
+                setPhotos(res.data);
+
+            })
+            .catch((err) => console.log(err));
+        }
+        
     }, []);
+
 
     const location = useLocation();
     const currentPath = location.pathname;
@@ -44,53 +68,59 @@ const Grid = ({ photos }) => {
         setEditedDescription(description);
         setEditedId(id);
         setButtonPopup(true);
+        setDeleteStatus(false);
     };
 
     const handleDelete = async (id) => {
-        await axios.delete(`http://localhost:3001/api/photo/${id}`)
-            .then((res) => {
-                console.log(res);
-                if(res.data.Status === 'Sucess'){
-                    setMsg("تم حذف الملف");
-                } else {
-                    setMsg("هناك خطأ ما")
-                }
-            })
-            .catch(err => console.log(err));
-
-        window.location.reload();
+        setButtonPopup(true);
+        setDeleteStatus(true);
+        setDeletedId(id);
     };
 
     const handleLike = async (id) => {
         try {
             const user = JSON.parse(localStorage.getItem("user"));
             const likedUserIds = likedPhotos.map((photo) => photo.userId);
-
+    
             if (user && !likedUserIds.includes(user.id)) {
-                await axios.post(`http://localhost:3001/api/photo/${id}/like`,
-                                { userId: user.id }
-                );
-                setLikedPhotos([...likedPhotos, { photoId: id, userId: user.id }]);
+                await axios.post(`http://localhost:3001/api/photo/${id}/like`, { userId: user.id });
+    
+                const updatedPhotos = photos.map(photo => {
+                    if (photo._id === id) {
+                        return { ...photo, likes: [...photo.likes, user.id] };
+                    } else {
+                        return photo;
+                    }
+                });
+                setPhotos(updatedPhotos);
             }
         } catch (error) {
             console.log(error);
         }
-
-        window.location.reload();
     };
+    
 
     const handleUnlike = async (id) => {
         try {
             const user = JSON.parse(localStorage.getItem("user"));
             if (user) {
                 await axios.delete(`http://localhost:3001/api/photo/${id}/like`, { data: { userId: user.id } });
+                
+                const updatedPhotos = photos.map(photo => {
+                    if (photo._id === id) {
+                        const updatedLikes = photo.likes.filter(userId => userId !== user.id);
+                        return { ...photo, likes: updatedLikes };
+                    } else {
+                        return photo;
+                    }
+                });
+                setPhotos(updatedPhotos);
             }
         } catch (error) {
             console.log(error);
         }
-
-        window.location.reload();
     };
+    
 
 
     return (
@@ -134,16 +164,30 @@ const Grid = ({ photos }) => {
                                         <button className={styles.updateButton} onClick={() => handleEdit(photo._id ,photo.title, photo.description)}>
                                             <IoOptionsOutline />
                                         </button>
-                                        <PopupForm styles trigger={buttonPopup} setTrigger={setButtonPopup}>
-                                            <EditForm
-                                                title={editedtitle}
-                                                description={editedDescription}
-                                                id={editedId}
-                                            />
-                                        </PopupForm>
                                         <button className={styles.deleteButton} onClick={() => handleDelete(photo._id)}>
                                             <IoTrashOutline />
                                         </button>
+                                        <PopupForm styles trigger={buttonPopup} setTrigger={setButtonPopup}>
+                                            {!deleteStatus && (
+                                                <EditForm
+                                                    setTrigger={setButtonPopup}
+                                                    title={editedtitle}
+                                                    description={editedDescription}
+                                                    id={editedId}
+                                                    photos = {photos}
+                                                    setPhotos = {setPhotos}
+                                                />
+                                            )}
+                                            {deleteStatus && (
+                                                <DeleteAlert
+                                                    setTrigger={setButtonPopup}
+                                                    id={deletedId}
+                                                    photos = {photos}
+                                                    setPhotos = {setPhotos}
+                                                />
+                                            )}
+                                            
+                                        </PopupForm>
                                     </>
                                 )}
                                 

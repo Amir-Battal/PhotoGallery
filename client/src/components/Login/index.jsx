@@ -3,34 +3,44 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
 import Auth from "../../Auth";
+import { useFormik } from "formik";
+import { loginSchema } from "../../schemas/loginSchemas";
 
 const Login = () => {
-    const [data, setData] = useState({ email: "", password: ""});
-    const [error, setError] = useState("");
-
-    const handleChange = ({ currentTarget: input }) => {
-        setData({ ...data, [input.name]: input.value});
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const url = "http://localhost:3001/api/auth";
-            axios.post(url, data)
-                .then(res => {
-                    Auth.login(res.data);
-                    window.location = "/";
-                })
-        } catch (error) {
-            if(
-                error.response &&
-                error.response.status >= 400 &&
-                error.response.status <= 500
-            ) {
-                setError(error.response.data.message);
+    const { values, errors, touched, isSubmitting, handleChange, handleBlur, handleSubmit } = useFormik({
+        initialValues: {
+            email: "",
+            password: "",
+            error: ""
+        },
+        validationSchema: loginSchema,  
+        onSubmit: async(values, {setError}) => {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            try {
+                const url = "http://localhost:3001/api/auth";
+                await axios.post(url, values)
+                    .then(res => {
+                        Auth.login(res.data);
+                        window.location = "/";
+                    })
+                    .catch(err => {
+                        if (err.response && err.response.status === 404) {
+                            errors.error = "الرجاء التحقق من البريد الالكتروني وكلمة المرور.";
+                        } else {
+                            errors.error = "الرجاء التحقق من البريد الالكتروني وكلمة المرور.";
+                        }
+                    });
+            } catch (error) {
+                if(
+                    error.response &&
+                    error.response.status >= 400 &&
+                    error.response.status <= 500    
+                ) {
+                    setError(error.response.data.message);
+                }
             }
         }
-    };
+    })
     
     return(
         <div className={styles.login_container}>
@@ -43,20 +53,22 @@ const Login = () => {
                             placeholder="البريد الالكتروني"
                             name="email"
                             onChange={handleChange}
-                            value={data.email}
-                            required
-                            className={styles.input}
+                            onBlur={handleBlur}
+                            value={values.email}
+                            className={ errors.email && touched.email ? styles.inputError : styles.input}
                         />
+                        {errors.email && touched.email && <p className={styles.error_msg}>{errors.email}</p>}
                         <input
                             type="password"
                             placeholder="كلمة المرور"
-                            name="password"
+                            name="password" 
                             onChange={handleChange}
-                            value={data.password}
-                            required
-                            className={styles.input}
+                            onBlur={handleBlur}
+                            value={values.password}
+                            className={errors.password && touched.password ? styles.inputError : styles.input}
                         />
-                        {error && <div className={styles.error_msg}>{error}</div>}
+                        {errors.password && touched.password && <p className={styles.error_msg}>{errors.password}</p>}
+                        {errors.error && <div className={styles.error_msg}>{errors.error}</div>}
                         <button type="submit" className={styles.green_btn}>
                             تسجيل دخول
                         </button>

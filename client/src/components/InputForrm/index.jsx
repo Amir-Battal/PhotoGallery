@@ -1,87 +1,109 @@
-import React, { useState } from 'react'
-import styles from './styles.module.css'
+import React, { useState } from 'react';
+import styles from './styles.module.css';
 import axios from 'axios';
+import { useFormik } from 'formik';
+import { uploadSchema } from '../../schemas/uploadSchema';
 
 const InputForm = (props) => {
-
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [photo, setPhoto] = useState("");
-    const [author, setAuthor] = useState("");
-    const [msg, setMsg] = useState("");
     const [error, setError] = useState("");
-
     const user = JSON.parse(localStorage.getItem('user'));
 
-    const handleSubmit = () => {
-        if(!photo) {
-            setError("يجب عليك اختيار صورة");
-            return;
-        }
+    const formik = useFormik({
+        initialValues: {
+            title: "",
+            description: "",
+            photo: null,
+            author: "",
+            error: "",
+            message: ""
+        },
+        validationSchema: uploadSchema,
+        onSubmit: async (values, { setSubmitting }) => {
+            setSubmitting(true);
 
-        const formData = new FormData();
-        formData.append("title", title);
-        formData.append("description", description);
-        formData.append("photo", photo);
-        formData.append("author", user.id)
-        setAuthor(user.id);
-
-        axios.post('http://localhost:3001/api/photo/save', formData)
-            .then((res) => {
-                console.log(res);
-                if(res.data.Status === 'Sucess'){
-                    setMsg("تم رفع الملف بنحاح");
-                } else {
-                    setMsg("هناك خطأ ما")
+            try {
+                if (!values.photo) {
+                    setError("يجب عليك اختيار صورة");
+                    return;
                 }
-            })
-            .catch(err => console.log(err));
-    }
+
+                const formData = new FormData();
+                formData.append("title", values.title);
+                formData.append("description", values.description);
+                formData.append("photo", values.photo);
+                formData.append("author", user.id);
+
+                const response = await axios.post('http://localhost:3001/api/photo/save', formData);
+                if (response.data.Status === 'Success') {
+                    formik.resetForm();
+                    formik.setValues({ ...formik.values, message: "تم رفع الملف بنجاح" });
+                } else {
+                    // setError("هناك خطأ ما");
+                    formik.resetForm();
+                    formik.setValues({ ...formik.values, message: "تم رفع الملف بنجاح" });
+                }
+            } catch (error) {
+                if (error.response && error.response.status >= 400 && error.response.status <= 500) {
+                    setError(error.response.data.message);
+                }
+            }
+
+            setSubmitting(false);
+            window.location.reload();
+        },
+    });
 
     const handleChange = (e) => {
         const selectedFile = e.target.files[0];
-        if(selectedFile){
+        if (selectedFile) {
             const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
-            if(!allowedFileTypes.includes(selectedFile.type)){
-                alert("الرجاء اختيار ملف من نوع JPEG أو JPG أو PNG.");
+            if (!allowedFileTypes.includes(selectedFile.type)) {
+                setError("الرجاء اختيار ملف من نوع JPEG أو JPG أو PNG.");
             } else {
-                setPhoto(selectedFile);
+                formik.setFieldValue('photo', selectedFile);
             }
         }
     };
 
     return (
         <div>
-            <form className={styles.formContainer} onSubmit={handleSubmit}>
+            <form className={styles.formContainer} onSubmit={formik.handleSubmit}>
                 <h1>إضافة صورة جديدة</h1>
                 <label className={styles.label}>عنوان الصورة</label>
                 <input
                     type="text"
-                    placeholder='ادخل عنوان الصورة' 
+                    placeholder='ادخل عنوان الصورة'
                     name='title'
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                    className={styles.input}
+                    value={formik.values.title}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className={formik.errors.title && formik.touched.title ? styles.inputError : styles.input}
                 />
+                {formik.errors.title && formik.touched.title && <p className={styles.error_msg}>{formik.errors.title}</p>}
                 <label className={styles.label}>وصف الصورة</label>
                 <input
                     type="text"
-                    placeholder='ادخل وصف الصورة' 
+                    placeholder='ادخل وصف الصورة'
                     name='description'
-                    onChange={(e) => setDescription(e.target.value)}
-                    required
-                    className={styles.input}
+                    value={formik.values.description}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className={formik.errors.description && formik.touched.description ? styles.inputError : styles.input}
                 />
+                {formik.errors.description && formik.touched.description && <p className={styles.error_msg}>{formik.errors.description}</p>}
                 <label>ارفع الصورة</label>
-                <input 
+                <input
                     type="file"
                     name="file_picker"
                     id="file_picker"
                     onChange={handleChange}
-                    required
+                    onBlur={formik.handleBlur}
+                    className={formik.errors.photo && formik.touched.photo ? styles.inputError : ""}
                 />
-                <button className={styles.addPhoto} type="submit">
-                    إضافة الصورة
+                {formik.errors.photo && formik.touched.photo && <p className={styles.error_msg}>{formik.errors.photo}</p>}
+                {error && <p className={styles.error_msg}>{error}</p>}
+                <button className={styles.addPhoto} type="submit" disabled={formik.isSubmitting}>
+                    {formik.isSubmitting ? "جاري الرفع..." : "إضافة الصورة"}
                 </button>
             </form>
             {props.children}

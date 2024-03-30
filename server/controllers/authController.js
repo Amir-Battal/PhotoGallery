@@ -7,9 +7,12 @@ exports.login = (req, res, next) => {
     let data = { email, password } = req.body;
     User.findOne({email})
         .then(user => {
-            if(!user || !user.checkPassword(password)){
-                throw createError(401, 'الرجاء التحقق من اسم المستخدم وكلمة المرور');
+            if(!user ){
+                throw createError(404, 'الرجاء التحقق من اسم المستخدم وكلمة المرور');
             }
+            if(!user.checkPassword(password))
+                throw createError(401, 'الرجاء التحقق من اسم المستخدم وكلمة المرور');
+
             res.json(user.signJwt());
         })
         .catch(next);
